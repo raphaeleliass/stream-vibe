@@ -1,7 +1,7 @@
 import axios from "axios";
 
-const movieDiscovery = axios.create({
+const movieDiscover = axios.create({
   baseURL: "https://api.themoviedb.org/3/discover/movie",
 });
 
-export { movieDiscovery };
+export { movieDiscover };

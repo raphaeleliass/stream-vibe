@@ -3,6 +3,7 @@ import { Button } from "../ui/button";
 import { PlayCircle, PlayIcon } from "lucide-react";
 import useMovie from "@/hooks/useMovie";
 import { Section, SectionTitle } from "../Section/Section";
+import { memo } from "react";
 function Hero() {
   const { data, isLoading } = useMovie({
     key: "movies",
@@ -12,7 +13,7 @@ function Hero() {
   return (
     <section className="flex flex-col items-center justify-center">
       {isLoading ? (
-        <div className="container relative flex max-h-72 w-full flex-wrap items-center justify-around gap-1 overflow-clip after:absolute after:inset-0 after:bg-gradient-to-t after:from-background after:via-transparent after:to-background md:max-h-max">
+        <div className="container relative flex max-h-72 w-full flex-wrap items-center justify-around gap-1 overflow-clip md:max-h-max">
           {Array.from({ length: 20 }, (_, index) => (
             <Skeleton
               key={index}
@@ -25,11 +26,12 @@ function Hero() {
         </div>
       ) : (
         <div className="container relative flex max-h-72 w-full flex-wrap items-center justify-around gap-1 overflow-clip after:absolute after:inset-0 after:bg-gradient-to-t after:from-background after:via-transparent after:to-background md:max-h-max">
-          {data.results.map(
+          {data.map(
             (item: { id: string; title: string; backdrop_path: string }) => (
               <img
+                loading="lazy"
                 key={item.id}
-                src={`https://image.tmdb.org/t/p/original${item.backdrop_path}`}
+                src={`https://image.tmdb.org/t/p/w500${item.backdrop_path}`}
                 alt=""
                 className="aspect-video w-24 rounded-xl object-cover object-center md:w-36 lg:w-56"
               />
@@ -64,4 +66,4 @@ function Hero() {
   );
 }
 
-export default Hero;
+export default memo(Hero);

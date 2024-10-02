@@ -1,5 +1,6 @@
+import GenreCarousel from "@/components/Carousel/movieGenreCarousel";
+import CtaPlan from "@/components/CTA/CtaPlan";
 import Faq from "@/components/FAQ/FAQ";
-import GenreCard from "@/components/GenreCard/genreCard";
 import Benefits from "@/components/Home/benefits";
 import Hero from "@/components/Home/hero";
 import PlanCard from "@/components/Home/planCard";
@@ -9,29 +10,12 @@ import {
   SectionTitle,
   SectionHeader,
 } from "@/components/Section/Section";
-import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-} from "@/components/ui/card";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from "@/components/ui/carousel";
 
 function Home() {
-  const genres: Array<
-    "Action" | "Animation" | "Comedy" | "War" | "Fantasy" | "Horror" | "Romance"
-  > = ["Action", "Animation", "Comedy", "War", "Fantasy", "Horror"];
-
   return (
-    <main className="flex flex-col items-center justify-center">
+    <main className="mx-auto flex flex-col items-center justify-center">
       <Hero />
+
       <Section className="items-start">
         <SectionHeader>
           <SectionTitle>Explore our wide variety of categories</SectionTitle>
@@ -40,20 +24,8 @@ function Home() {
             make you think, or a documentary to learn something new
           </SectionDescription>
         </SectionHeader>
-        <Carousel className="mx-auto w-full max-w-xs md:max-w-2xl lg:max-w-6xl">
-          <CarouselContent>
-            {genres.map((genre) => (
-              <CarouselItem
-                key={genre}
-                className="basis-2/3 md:basis-2/5 lg:basis-1/5"
-              >
-                <GenreCard genre={genre} />
-              </CarouselItem>
-            ))}
-          </CarouselContent>
-          <CarouselNext className="hidden md:flex" />
-          <CarouselPrevious className="hidden md:flex" />
-        </Carousel>
+
+        <GenreCarousel />
       </Section>
 
       <Section>
@@ -68,6 +40,7 @@ function Home() {
             entertainment.
           </SectionDescription>
         </SectionHeader>
+
         <Benefits />
       </Section>
 
@@ -96,30 +69,7 @@ function Home() {
         <PlanCard />
       </Section>
 
-      <Section>
-        <Card className="flex flex-col items-center justify-around bg-gradient-to-r from-black via-transparent to-red-900 md:flex-row">
-          <div>
-            <CardHeader>
-              <SectionTitle>Start your free trial today!</SectionTitle>
-            </CardHeader>
-            <CardContent>
-              <SectionDescription>
-                This is a clear and concise call to action that encourages users
-                to sign up for a free trial of StreamVibe.
-              </SectionDescription>
-            </CardContent>
-          </div>
-
-          <CardFooter className="flex w-full md:w-auto md:py-0">
-            <Button
-              variant={"destructive"}
-              className="w-full bg-red-600 drop-shadow-2xl hover:bg-red-700"
-            >
-              Start a free trial
-            </Button>
-          </CardFooter>
-        </Card>
-      </Section>
+      <CtaPlan />
     </main>
   );
 }
