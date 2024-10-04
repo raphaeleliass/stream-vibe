@@ -21,7 +21,6 @@ function useMovieDiscover({ key, genre, language }: HookProps) {
         })
         .then((response) => response.data.results);
     },
-    staleTime: 1000 * 60 * 5,
   });
 
   return { data, isLoading, isError };

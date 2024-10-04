@@ -16,7 +16,7 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import { Skeleton } from "@/components/ui/skeleton";
-import { movieApi } from "@/services/movieApi";
+import { TvApi } from "@/services/TvApi";
 import { useQuery } from "@tanstack/react-query";
 import {
   Calendar,
@@ -30,12 +30,13 @@ import {
 } from "lucide-react";
 import { useParams } from "react-router-dom";
 
-function Movie() {
+function Tv() {
   const { id } = useParams();
-  const { data: movie, isLoading } = useQuery({
-    queryKey: [`movie-${id}`],
+
+  const { data: show, isLoading: isLoadingShow } = useQuery({
+    queryKey: [`show-${id}`],
     queryFn: async () => {
-      const response = await movieApi.get(`/${id}`, {
+      const response = await TvApi.get(`${id}`, {
         params: {
           api_key: import.meta.env.VITE_API_KEY,
         },
@@ -45,9 +46,9 @@ function Movie() {
   });
 
   const { data: credits, isLoading: isLoadingCredits } = useQuery({
-    queryKey: [`movie-${id}-credits`],
+    queryKey: [`credits-${id}`],
     queryFn: async () => {
-      const response = await movieApi.get(`${id}/credits`, {
+      const response = await TvApi.get(`${id}/credits`, {
         params: {
           api_key: import.meta.env.VITE_API_KEY,
         },
@@ -56,29 +57,31 @@ function Movie() {
     },
   });
 
+  console.log(credits);
+
   return (
     <main className="flex flex-col items-center justify-center">
-      {isLoading ? (
-        <div className="container mx-auto grid grid-cols-5 gap-4 px-6">
-          <Skeleton className="col-span-full min-h-[70dvh]" />
-          <Skeleton className="col-span-3 min-h-[30dvh]" />
-          <Skeleton className="col-span-2 min-h-[30dvh]" />
+      {isLoadingShow ? (
+        <div className="grid grid-cols-4 gap-4 p-4">
+          <Skeleton className="col-span-4 min-h-[70dvh] rounded-xl" />
+          <Skeleton className="col-span-2 min-h-[30dvh] rounded-xl" />
+          <Skeleton className="col-span-2 min-h-[30dvh] rounded-xl" />
         </div>
       ) : (
         <>
           <Section>
             <div className="relative flex w-full items-center justify-center after:absolute after:inset-0 after:bg-background after:opacity-50">
               <img
-                src={`https://image.tmdb.org/t/p/w500${movie.backdrop_path}`}
-                alt={`Backdrop of the movie ${movie.title}`}
+                src={`https://image.tmdb.org/t/p/w500${show.backdrop_path}`}
+                alt={`Backdrop of the movie ${show.name}`}
                 className="aspect-square h-96 w-full rounded-lg object-cover object-center md:aspect-video md:h-auto lg:max-w-2xl"
               />
               <div className="absolute bottom-2 z-10 flex flex-col gap-2 md:bottom-10">
                 <h2 className="text-center text-xl font-semibold drop-shadow-xl">
-                  {movie.title}
+                  {show.name}
                 </h2>
                 <p className="text-center font-light italic drop-shadow-xl">
-                  {movie.tagline}
+                  {show.tagline}
                 </p>
                 <div className="flex w-full flex-col items-center justify-center gap-2 md:flex-row">
                   <Button
@@ -103,7 +106,7 @@ function Movie() {
             </div>
           </Section>
 
-          <Section className="grid grid-cols-1 md:grid-cols-5">
+          <Section>
             <div className="flex flex-col gap-4 md:col-span-3">
               <Card>
                 <CardHeader>
@@ -111,41 +114,49 @@ function Movie() {
                     Description
                   </CardTitle>
                 </CardHeader>
-                <CardContent>{movie.overview}</CardContent>
+                <CardContent>{show.overview}</CardContent>
               </Card>
+            </div>
 
-              <Card>
-                <CardHeader>
-                  <CardTitle className="text-muted-foreground">Cast</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <Carousel>
-                    <CarouselContent>
-                      {isLoadingCredits ? (
-                        <>
-                          {Array.from({ length: 10 }, (_, index) => (
-                            <CarouselItem key={index}>
-                              <Skeleton className="aspect-square size-20 rounded-lg" />
-                            </CarouselItem>
-                          ))}
-                        </>
-                      ) : (
-                        <>
-                          {credits.cast.map(
-                            (item: {
-                              id: string;
-                              name: string;
-                              profile_path: string;
-                            }) => (
-                              <CarouselItem
-                                key={item.id}
-                                className="basis-1/2 md:basis-2/4 lg:basis-1/4"
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-muted-foreground">Cast</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <Carousel>
+                  <CarouselContent>
+                    {isLoadingCredits ? (
+                      <>
+                        {Array.from({ length: 10 }, (_, index) => (
+                          <CarouselItem key={`skeleton-${index}`}>
+                            {" "}
+                            // Alterado para usar um prefixo com o índice
+                            <Skeleton className="aspect-square size-20 rounded-lg" />
+                          </CarouselItem>
+                        ))}
+                      </>
+                    ) : (
+                      <>
+                        {credits.cast.map(
+                          (item: {
+                            id: string;
+                            name: string;
+                            profile_path: string;
+                          }) => (
+                            <CarouselItem
+                              key={item.id}
+                              className="basis-1/2 md:basis-1/4 lg:basis-1/4"
+                            >
+                              <a
+                                href={`https://pt.wikipedia.org/wiki/${item.name.replace(" ", "_")}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
                               >
                                 <Card className="flex flex-col items-center">
                                   <CardHeader>
                                     <img
                                       src={`https://image.tmdb.org/t/p/w500${item.profile_path}`}
-                                      alt={`Picture of ${item.name}`}
+                                      alt={`Picture of ${item.name}`} // Melhorar acessibilidade
                                       className="aspect-square size-20 rounded-lg object-cover object-center"
                                     />
                                   </CardHeader>
@@ -155,18 +166,34 @@ function Movie() {
                                     </CardDescription>
                                   </CardContent>
                                 </Card>
-                              </CarouselItem>
-                            ),
-                          )}
-                        </>
-                      )}
-                    </CarouselContent>
-                    <CarouselNext />
-                    <CarouselPrevious />
-                  </Carousel>
-                </CardContent>
-              </Card>
-            </div>
+                              </a>
+                            </CarouselItem>
+                          ),
+                        )}
+                      </>
+                    )}
+                    <CarouselItem className="basis-1/2 md:basis-2/4 lg:basis-1/4">
+                      <Card className="flex h-full flex-col items-center justify-center">
+                        <CardContent>
+                          <Button variant={"link"}>
+                            {" "}
+                            <a
+                              href={`https://pt.wikipedia.org/wiki/${show.name.replace(" ", "_")}`}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              More...
+                            </a>{" "}
+                          </Button>
+                        </CardContent>
+                      </Card>
+                    </CarouselItem>
+                  </CarouselContent>
+                  <CarouselNext />
+                  <CarouselPrevious />
+                </Carousel>
+              </CardContent>
+            </Card>
 
             <div className="md:col-span-2">
               <Card>
@@ -176,7 +203,7 @@ function Movie() {
                       <Calendar className="size-4" />
                       Release Year
                     </CardDescription>
-                    <CardTitle>{movie.release_date.slice(0, 4)}</CardTitle>
+                    <CardTitle>{show.first_air_date.slice(0, 4)}</CardTitle>
                   </div>
 
                   <div className="flex flex-col gap-4">
@@ -185,7 +212,7 @@ function Movie() {
                       Spoken Languages
                     </CardDescription>
                     <CardTitle>
-                      {movie.spoken_languages.map(
+                      {show.spoken_languages.map(
                         (item: { iso_639_1: string; name: string }) => (
                           <span
                             key={item.iso_639_1}
@@ -203,7 +230,7 @@ function Movie() {
                       <Star className="size-4" />
                       Rating
                     </CardDescription>
-                    <CardTitle>{movie.vote_average.toFixed(1)}</CardTitle>
+                    <CardTitle>{show.vote_average.toFixed(1)}</CardTitle>
                   </div>
 
                   <div className="flex flex-col gap-4">
@@ -212,43 +239,51 @@ function Movie() {
                       Genres
                     </CardDescription>
                     <CardTitle className="flex flex-row flex-wrap items-center gap-2">
-                      {movie.genres.map(
-                        (item: { id: string; name: string }) => (
-                          <span
-                            key={item.id}
-                            className="text-nowrap rounded-lg px-2 py-1 ring-1 ring-zinc-800"
-                          >
-                            {item.name}
-                          </span>
-                        ),
-                      )}
+                      {show.genres.map((item: { id: string; name: string }) => (
+                        <span
+                          key={item.id} // Certificando-se de que a chave única está aqui
+                          className="text-nowrap rounded-lg px-2 py-1 ring-1 ring-zinc-800"
+                        >
+                          {item.name}
+                        </span>
+                      ))}
                     </CardTitle>
                   </div>
 
                   <div className="flex flex-col gap-4">
-                    <CardDescription>Director</CardDescription>
+                    <CardDescription>Creator</CardDescription>
                     <Card className="flex flex-row items-center">
                       {isLoadingCredits ? (
                         <Skeleton className="h-32 w-full" />
                       ) : (
                         <>
-                          <a
-                            href={`https://pt.wikipedia.org/wiki/${credits.crew[0].name.replace(" ", "_")}`}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                          >
-                            <CardHeader>
-                              <img
-                                src={`https://image.tmdb.org/t/p/w500${credits.crew[0].profile_path}`}
-                                alt={`Director's picture of ${credits.crew[0].name}`}
-                                className="aspect-square size-20 rounded-lg object-cover object-center"
-                              />
-                            </CardHeader>
-
-                            <div className="flex flex-col items-center justify-center">
-                              {credits.crew[0].name}
-                            </div>
-                          </a>
+                          {show.created_by.map(
+                            (item: {
+                              credit_id: string;
+                              profile_path: string;
+                              name: string;
+                            }) => (
+                              <a
+                                key={item.credit_id}
+                                href={`https://pt.wikipedia.org/wiki/${item.name.replace(" ", "_")}`}
+                                rel="noopener noreferrer"
+                                target="_blank"
+                              >
+                                <div className="flex flex-row">
+                                  <CardHeader>
+                                    <img
+                                      src={`https://image.tmdb.org/t/p/w500${item.profile_path}`}
+                                      alt=""
+                                      className="size-20 rounded-lg object-cover object-center"
+                                    />
+                                  </CardHeader>
+                                  <div className="flex flex-col items-center justify-center">
+                                    <CardTitle>{item.name}</CardTitle>
+                                  </div>
+                                </div>
+                              </a>
+                            ),
+                          )}
                         </>
                       )}
                     </Card>
@@ -257,12 +292,11 @@ function Movie() {
               </Card>
             </div>
           </Section>
-
-          <CtaPlan />
         </>
       )}
+      <CtaPlan />
     </main>
   );
 }
 
-export default Movie;
+export default Tv;
