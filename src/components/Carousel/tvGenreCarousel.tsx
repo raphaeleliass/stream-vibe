@@ -44,6 +44,8 @@ const genres: Array<
   "Western",
 ];
 
+//TODO ADICIONAR A TAG LINK PARA A PAGINA QUE LISTA AS ** SERIES ** DOS GENEROS SELECIONARDOS
+
 function TvGenreCarousel() {
   return (
     <Carousel className="mx-auto w-full max-w-xs md:max-w-2xl lg:max-w-6xl">

@@ -1,3 +1,4 @@
+import { ComponentProps } from "react";
 import {
   Accordion,
   AccordionContent,
@@ -48,9 +49,9 @@ const faqContent = [
   },
 ];
 
-function Faq() {
+function Faq({ className, ...props }: ComponentProps<"div">) {
   return (
-    <>
+    <div className={className} {...props}>
       <Accordion
         type="single"
         className="grid grid-cols-1 gap-x-6 md:grid-cols-2"
@@ -67,7 +68,7 @@ function Faq() {
           </AccordionItem>
         ))}
       </Accordion>
-    </>
+    </div>
   );
 }
 

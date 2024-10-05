@@ -1,10 +1,11 @@
+import { ComponentProps } from "react";
 import { Section, SectionDescription, SectionTitle } from "../Section/Section";
 import { Button } from "../ui/button";
 import { Card, CardContent, CardFooter, CardHeader } from "../ui/card";
 
-function CtaPlan() {
+function CtaPlan({ className, ...props }: ComponentProps<"div">) {
   return (
-    <Section>
+    <Section className={className} {...props}>
       <Card className="flex flex-col items-center justify-around bg-gradient-to-r from-black via-transparent to-red-900 md:flex-row">
         <div>
           <CardHeader>

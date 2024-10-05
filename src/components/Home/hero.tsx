@@ -6,7 +6,7 @@ import { Section, SectionTitle } from "../Section/Section";
 import { memo } from "react";
 function Hero() {
   const { data, isLoading } = useMovie({
-    key: "movies",
+    key: "hero-movies",
     category: "popular",
   });
 
@@ -41,6 +41,7 @@ function Hero() {
             <PlayCircle className="size-44 text-white opacity-30 md:size-56 lg:size-96" />
           </span>
         </div>
+        //TODO COPIAR O ASPECT DESSE HERO E APLICAR NO COMPONENTE BGMOVIES
       )}
       <Section className="my-0 -translate-y-8 items-center justify-center">
         <SectionTitle className="text-center font-Poppins text-3xl lg:text-5xl">
