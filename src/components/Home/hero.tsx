@@ -1,48 +1,14 @@
-import { Skeleton } from "../ui/skeleton";
 import { Button } from "../ui/button";
-import { PlayCircle, PlayIcon } from "lucide-react";
-import useMovie from "@/hooks/useMovie";
+import { PlayIcon } from "lucide-react";
+
 import { Section, SectionTitle } from "../Section/Section";
 import { memo } from "react";
+import BgMovies from "../Background/bgMovies";
 function Hero() {
-  const { data, isLoading } = useMovie({
-    key: "hero-movies",
-    category: "popular",
-  });
-
   return (
     <section className="flex flex-col items-center justify-center">
-      {isLoading ? (
-        <div className="container relative flex max-h-72 w-full flex-wrap items-center justify-around gap-1 overflow-clip md:max-h-max">
-          {Array.from({ length: 20 }, (_, index) => (
-            <Skeleton
-              key={index}
-              className="aspect-video w-24 rounded-xl md:w-36 lg:w-56"
-            />
-          ))}
-          <span className="absolute">
-            <PlayCircle className="size-44 text-white opacity-30 md:size-56 lg:size-96" />
-          </span>
-        </div>
-      ) : (
-        <div className="container relative flex max-h-72 w-full flex-wrap items-center justify-around gap-1 overflow-clip after:absolute after:inset-0 after:bg-gradient-to-t after:from-background after:via-transparent after:to-background md:max-h-max">
-          {data.map(
-            (item: { id: string; title: string; backdrop_path: string }) => (
-              <img
-                loading="lazy"
-                key={item.id}
-                src={`https://image.tmdb.org/t/p/w500${item.backdrop_path}`}
-                alt=""
-                className="aspect-video w-24 rounded-xl object-cover object-center md:w-36 lg:w-56"
-              />
-            ),
-          )}
-          <span className="absolute">
-            <PlayCircle className="size-44 text-white opacity-30 md:size-56 lg:size-96" />
-          </span>
-        </div>
-        //TODO COPIAR O ASPECT DESSE HERO E APLICAR NO COMPONENTE BGMOVIES
-      )}
+      <BgMovies className="max-h-[30dvh] gap-4 md:max-h-[23dvh] md:gap-2 lg:max-h-[40dvh] lg:gap-3" />
+
       <Section className="my-0 -translate-y-8 items-center justify-center">
         <SectionTitle className="text-center font-Poppins text-3xl lg:text-5xl">
           The Best Streaming Experience

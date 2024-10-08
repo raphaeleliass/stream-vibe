@@ -9,7 +9,7 @@ const queryClient = new QueryClient({
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <RoutesProvider />;
+      <RoutesProvider />
       <ReactQueryDevtools buttonPosition="bottom-left" />
     </QueryClientProvider>
   );

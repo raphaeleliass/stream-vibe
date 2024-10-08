@@ -7,16 +7,7 @@ import {
   SectionTitle,
 } from "@/components/Section/Section";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-} from "@/components/ui/card";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Input } from "@/components/ui/input";
-
-import { Textarea } from "@/components/ui/textarea";
+import SupportForm from "@/components/ui/support-form";
 
 function Support() {
   return (
@@ -28,61 +19,15 @@ function Support() {
           product.
         </SectionDescription>
 
-        <BgMovies />
+        <BgMovies
+          classIcon="size-32"
+          className="justify-center gap-2 md:max-h-[18vh] lg:max-h-[35vh]"
+          classImage="w-16 md:w-20 lg:w-32"
+        />
       </Section>
 
       <Section className="md:col-span-3">
-        <form>
-          <Card>
-            <CardHeader className="grid grid-cols-1 gap-4 space-y-0 text-xs md:grid-cols-2">
-              <label className="flex flex-col gap-1 text-muted-foreground">
-                <p>First Name</p>
-                <Input placeholder="Enter your first name" />
-              </label>
-
-              <label className="flex flex-col gap-1 text-muted-foreground">
-                <p>Last Name</p>
-                <Input placeholder="Enter your last name" />
-              </label>
-
-              <label className="flex flex-col gap-1 text-muted-foreground">
-                <p>E-mail</p>
-                <Input placeholder="Enter your e-mail" />
-              </label>
-
-              <label className="flex flex-col gap-1 text-muted-foreground">
-                <p>Phone Number</p>
-                <Input placeholder="Enter your phone number" />
-              </label>
-            </CardHeader>
-
-            <CardContent>
-              <label className="flex flex-col gap-1 text-xs text-muted-foreground">
-                <p>Message</p>
-                <Textarea placeholder="Enter your message" className="h-32" />
-              </label>
-            </CardContent>
-
-            <CardFooter className="flex-col items-center justify-between gap-6 md:flex-row">
-              <div className="flex items-center justify-center gap-2">
-                <Checkbox id="terms" />
-                <label
-                  htmlFor="terms"
-                  className="text-xs font-light text-muted-foreground"
-                >
-                  I agree with Terms of Use and Privacy Policy
-                </label>
-              </div>
-
-              <Button
-                variant={"destructive"}
-                className="w-full bg-red-600 hover:bg-red-700 md:w-auto"
-              >
-                Send Message
-              </Button>
-            </CardFooter>
-          </Card>
-        </form>
+        <SupportForm />
       </Section>
 
       <Section className="col-span-full grid grid-cols-3 md:grid-cols-5">

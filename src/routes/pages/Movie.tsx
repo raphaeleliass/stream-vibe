@@ -60,9 +60,9 @@ function Movie() {
     <main className="flex flex-col items-center justify-center">
       {isLoading ? (
         <div className="container mx-auto grid grid-cols-5 gap-4 px-6">
-          <Skeleton className="col-span-full min-h-[70dvh]" />
-          <Skeleton className="col-span-3 min-h-[30dvh]" />
-          <Skeleton className="col-span-2 min-h-[30dvh]" />
+          <Skeleton className="col-span-full min-h-[70dvh] rounded-xl" />
+          <Skeleton className="col-span-3 min-h-[30dvh] rounded-xl" />
+          <Skeleton className="col-span-2 min-h-[30dvh] rounded-xl" />
         </div>
       ) : (
         <>
@@ -160,6 +160,22 @@ function Movie() {
                           )}
                         </>
                       )}
+                      <CarouselItem className="basis-1/2 md:basis-2/4 lg:basis-1/4">
+                        <Card className="flex h-full flex-col items-center justify-center">
+                          <CardContent>
+                            <Button variant={"link"}>
+                              {" "}
+                              <a
+                                href={`https://pt.wikipedia.org/wiki/${movie.title.replace(" ", "_")}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                              >
+                                More...
+                              </a>{" "}
+                            </Button>
+                          </CardContent>
+                        </Card>
+                      </CarouselItem>
                     </CarouselContent>
                     <CarouselNext />
                     <CarouselPrevious />
@@ -237,18 +253,17 @@ function Movie() {
                             target="_blank"
                             rel="noopener noreferrer"
                           >
-                            <CardHeader>
+                            <CardHeader className="flex flex-row">
                               <img
                                 src={`https://image.tmdb.org/t/p/w500${credits.crew[0].profile_path}`}
                                 alt={`Director's picture of ${credits.crew[0].name}`}
                                 className="aspect-square size-20 rounded-lg object-cover object-center"
                               />
                             </CardHeader>
-
-                            <div className="flex flex-col items-center justify-center">
-                              {credits.crew[0].name}
-                            </div>
                           </a>
+                          <div className="flex flex-col items-center justify-center">
+                            {credits.crew[0].name}
+                          </div>
                         </>
                       )}
                     </Card>

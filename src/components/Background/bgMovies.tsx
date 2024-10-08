@@ -1,8 +1,21 @@
 import useMovie from "@/hooks/useMovie";
 import { cn } from "@/lib/utils";
+import { PlayCircle } from "lucide-react";
 import { ComponentProps } from "react";
+import { Skeleton } from "../ui/skeleton";
 
-function BgMovies({ className, ...props }: ComponentProps<"div">) {
+interface BgMoviesProps extends ComponentProps<"div"> {
+  className?: string;
+  classImage?: string;
+  classIcon?: string;
+}
+
+function BgMovies({
+  classImage,
+  classIcon,
+  className,
+  ...props
+}: BgMoviesProps) {
   const { data, isLoading } = useMovie({
     key: "bg-popular-movies",
     category: "popular",
@@ -11,14 +24,20 @@ function BgMovies({ className, ...props }: ComponentProps<"div">) {
   return (
     <div
       className={cn(
-        "relative grid w-full grid-cols-10 after:absolute after:inset-0 after:bg-gradient-to-t after:from-background after:via-transparent after:to-background",
+        "relative flex w-full items-center justify-center grid-cols-10 flex-wrap overflow-clip after:absolute after:inset-0 after:bg-gradient-to-t after:from-background after:via-transparent after:to-background",
         className,
       )}
-      //TODO CONSERTAR O AGRUPAMENTO DAS IMAGENS
       {...props}
     >
       {isLoading ? (
-        ""
+        <>
+          {Array.from({ length: 20 }, (_, index) => (
+            <Skeleton
+              key={index}
+              className="aspect-video w-20 rounded-lg md:w-32 lg:w-44"
+            />
+          ))}
+        </>
       ) : (
         <>
           {data.map(
@@ -27,13 +46,16 @@ function BgMovies({ className, ...props }: ComponentProps<"div">) {
                 key={movie.id}
                 src={`https://image.tmdb.org/t/p/w500${movie.backdrop_path}`}
                 alt={`Picture of ${movie.title}`}
-                className="aspect-video w-96 rounded-lg object-cover object-center"
-                // TODO ARRUMAR O ASPECT DAS IMAGENS
+                className={cn(
+                  "aspect-video w-20 rounded-lg md:w-32 lg:w-44",
+                  classImage,
+                )}
               />
             ),
           )}
         </>
       )}
+      <PlayCircle className={cn("absolute size-56 opacity-40", classIcon)} />
     </div>
   );
 }

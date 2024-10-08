@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { Button } from "../ui/button";
 import {
   Card,
@@ -30,7 +31,10 @@ function PlanCard() {
   return (
     <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
       {plans.map((item) => (
-        <Card key={item.title} className="space-y-6">
+        <Card
+          key={item.title}
+          className="flex flex-col justify-between space-y-6 md:space-y-0 lg:space-y-6"
+        >
           <CardHeader>
             <CardTitle>{item.title}</CardTitle>
             <CardDescription>{item.desc}</CardDescription>
@@ -43,13 +47,13 @@ function PlanCard() {
           </CardContent>
           <CardFooter className="w-full items-center justify-center gap-2 md:flex-col lg:flex-row">
             <Button variant={"outline"} className="md:w-full lg:w-auto">
-              Start Free Trial
+              <Link to={"/subscriptions"}>Start Free Trial</Link>
             </Button>
             <Button
               variant={"destructive"}
               className="bg-red-600 hover:bg-red-700 md:w-full lg:w-auto"
             >
-              Choose Plan
+              <Link to={"/subscriptions"}>Choose Plan</Link>
             </Button>
           </CardFooter>
         </Card>

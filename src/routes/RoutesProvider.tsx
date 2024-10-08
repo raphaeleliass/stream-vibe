@@ -10,6 +10,8 @@ import ScrollToTop from "@/components/scrollToTop";
 import Support from "./pages/Support";
 import Subscriptions from "./pages/Subscriptions";
 import Liked from "./pages/Liked";
+import GenreListMovies from "./pages/GenreListMovies";
+import GenreListShows from "./pages/GenreListShows";
 
 function RoutesProvider() {
   return (
@@ -25,6 +27,8 @@ function RoutesProvider() {
         <Route path="/liked" element={<Liked />} />
         <Route path="/movie/:id" element={<Movie />} />
         <Route path="/tv/:id" element={<Tv />} />
+        <Route path="/movies/:id" element={<GenreListMovies />} />
+        <Route path="/shows/:id" element={<GenreListShows />} />
       </Routes>
       <Footer />
     </BrowserRouter>

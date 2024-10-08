@@ -62,7 +62,7 @@ function Tv() {
   return (
     <main className="flex flex-col items-center justify-center">
       {isLoadingShow ? (
-        <div className="grid grid-cols-4 gap-4 p-4">
+        <div className="grid w-full grid-cols-1 place-items-center justify-items-center gap-4 p-4 md:grid-cols-5">
           <Skeleton className="col-span-4 min-h-[70dvh] rounded-xl" />
           <Skeleton className="col-span-2 min-h-[30dvh] rounded-xl" />
           <Skeleton className="col-span-2 min-h-[30dvh] rounded-xl" />
@@ -106,8 +106,8 @@ function Tv() {
             </div>
           </Section>
 
-          <Section>
-            <div className="flex flex-col gap-4 md:col-span-3">
+          <Section className="grid grid-cols-1 md:grid-cols-5">
+            <div className="col-span-3 flex flex-col gap-6">
               <Card>
                 <CardHeader>
                   <CardTitle className="text-muted-foreground">
@@ -116,87 +116,84 @@ function Tv() {
                 </CardHeader>
                 <CardContent>{show.overview}</CardContent>
               </Card>
-            </div>
-
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-muted-foreground">Cast</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <Carousel>
-                  <CarouselContent>
-                    {isLoadingCredits ? (
-                      <>
-                        {Array.from({ length: 10 }, (_, index) => (
-                          <CarouselItem key={`skeleton-${index}`}>
-                            {" "}
-                            // Alterado para usar um prefixo com o índice
-                            <Skeleton className="aspect-square size-20 rounded-lg" />
-                          </CarouselItem>
-                        ))}
-                      </>
-                    ) : (
-                      <>
-                        {credits.cast.map(
-                          (item: {
-                            id: string;
-                            name: string;
-                            profile_path: string;
-                          }) => (
-                            <CarouselItem
-                              key={item.id}
-                              className="basis-1/2 md:basis-1/4 lg:basis-1/4"
-                            >
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-muted-foreground">Cast</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <Carousel>
+                    <CarouselContent>
+                      {isLoadingCredits ? (
+                        <>
+                          {Array.from({ length: 10 }, (_, index) => (
+                            <CarouselItem key={`skeleton-${index}`}>
+                              <Skeleton className="aspect-square size-20 rounded-lg" />
+                            </CarouselItem>
+                          ))}
+                        </>
+                      ) : (
+                        <>
+                          {credits.cast.map(
+                            (item: {
+                              id: string;
+                              name: string;
+                              profile_path: string;
+                            }) => (
+                              <CarouselItem
+                                key={item.id}
+                                className="basis-2/3 md:basis-2/4 lg:basis-2/5"
+                              >
+                                <a
+                                  href={`https://pt.wikipedia.org/wiki/${item.name.replace(" ", "_")}`}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                >
+                                  <Card className="flex flex-col items-center">
+                                    <CardHeader>
+                                      <img
+                                        src={`https://image.tmdb.org/t/p/w500${item.profile_path}`}
+                                        alt={`Picture of ${item.name}`} // Melhorar acessibilidade
+                                        className="aspect-square rounded-lg object-cover object-center lg:size-44"
+                                      />
+                                    </CardHeader>
+                                    <CardContent>
+                                      <CardDescription className="text-nowrap text-center text-xs">
+                                        {item.name}
+                                      </CardDescription>
+                                    </CardContent>
+                                  </Card>
+                                </a>
+                              </CarouselItem>
+                            ),
+                          )}
+                        </>
+                      )}
+                      <CarouselItem className="basis-1/2 md:basis-2/4 lg:basis-1/4">
+                        <Card className="flex h-full flex-col items-center justify-center">
+                          <CardContent>
+                            <Button variant={"link"}>
+                              {" "}
                               <a
-                                href={`https://pt.wikipedia.org/wiki/${item.name.replace(" ", "_")}`}
+                                href={`https://pt.wikipedia.org/wiki/${show.name.replace(" ", "_")}`}
                                 target="_blank"
                                 rel="noopener noreferrer"
                               >
-                                <Card className="flex flex-col items-center">
-                                  <CardHeader>
-                                    <img
-                                      src={`https://image.tmdb.org/t/p/w500${item.profile_path}`}
-                                      alt={`Picture of ${item.name}`} // Melhorar acessibilidade
-                                      className="aspect-square size-20 rounded-lg object-cover object-center"
-                                    />
-                                  </CardHeader>
-                                  <CardContent>
-                                    <CardDescription className="text-nowrap text-center text-xs">
-                                      {item.name}
-                                    </CardDescription>
-                                  </CardContent>
-                                </Card>
-                              </a>
-                            </CarouselItem>
-                          ),
-                        )}
-                      </>
-                    )}
-                    <CarouselItem className="basis-1/2 md:basis-2/4 lg:basis-1/4">
-                      <Card className="flex h-full flex-col items-center justify-center">
-                        <CardContent>
-                          <Button variant={"link"}>
-                            {" "}
-                            <a
-                              href={`https://pt.wikipedia.org/wiki/${show.name.replace(" ", "_")}`}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                            >
-                              More...
-                            </a>{" "}
-                          </Button>
-                        </CardContent>
-                      </Card>
-                    </CarouselItem>
-                  </CarouselContent>
-                  <CarouselNext />
-                  <CarouselPrevious />
-                </Carousel>
-              </CardContent>
-            </Card>
+                                More...
+                              </a>{" "}
+                            </Button>
+                          </CardContent>
+                        </Card>
+                      </CarouselItem>
+                    </CarouselContent>
+                    <CarouselNext />
+                    <CarouselPrevious />
+                  </Carousel>
+                </CardContent>
+              </Card>
+            </div>
 
-            <div className="md:col-span-2">
-              <Card>
+            <div className="col-span-3 md:col-span-2">
+              <Card className="w-full">
                 <CardHeader className="gap-6">
                   <div className="flex flex-col gap-4">
                     <CardDescription className="flex items-center gap-1">

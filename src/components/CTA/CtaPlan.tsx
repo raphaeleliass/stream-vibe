@@ -2,6 +2,7 @@ import { ComponentProps } from "react";
 import { Section, SectionDescription, SectionTitle } from "../Section/Section";
 import { Button } from "../ui/button";
 import { Card, CardContent, CardFooter, CardHeader } from "../ui/card";
+import { Link } from "react-router-dom";
 
 function CtaPlan({ className, ...props }: ComponentProps<"div">) {
   return (
@@ -24,7 +25,7 @@ function CtaPlan({ className, ...props }: ComponentProps<"div">) {
             variant={"destructive"}
             className="w-full bg-red-600 drop-shadow-2xl hover:bg-red-700"
           >
-            Start a free trial
+            <Link to={"/subscriptions"}>Start a free trial</Link>
           </Button>
         </CardFooter>
       </Card>
