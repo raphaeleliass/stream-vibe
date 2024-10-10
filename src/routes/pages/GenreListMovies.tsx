@@ -114,8 +114,8 @@ function GenreListMovies() {
                       className="w-full md:w-auto"
                     />
                     <ButtonFavorite
-                      movieId={movie.id}
-                      movieData={movie}
+                      mediaType="Movies"
+                      itemData={movie}
                       className="w-full md:w-auto"
                     />
                   </CardFooter>

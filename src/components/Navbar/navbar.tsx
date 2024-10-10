@@ -1,10 +1,21 @@
-import { Bell, Menu, PlayCircle, Search, X } from "lucide-react";
+import { Heart, Menu, PlayCircle, Search, X } from "lucide-react";
 import { Menubar, MenubarMenu, MenubarTrigger } from "../ui/menubar";
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 
 function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const { data: countFav } = useQuery({
+    queryKey: ["count-content"],
+    queryFn: () => {
+      const response = JSON.parse(
+        localStorage.getItem("favorite-Movies") || "[]",
+      );
+      return response;
+    },
+    refetchInterval: 1000,
+  });
 
   function toggleMenu() {
     setMenuOpen(!menuOpen);
@@ -49,9 +60,18 @@ function Navbar() {
           <button>
             <Search />
           </button>
-          <button>
-            <Bell />
+          <button className="relative">
+            <Link to="/liked">
+              <Heart />
+
+              <span
+                className={`absolute right-0.5 top-1/2 size-4 flex-col items-center justify-center rounded-full bg-red-600 text-[8px] font-bold md:text-xs ${countFav?.length === 0 ? "hidden" : "flex"}`}
+              >
+                {countFav?.length}
+              </span>
+            </Link>
           </button>
+
           <button className="block md:hidden" onClick={toggleMenu}>
             {menuOpen ? <X /> : <Menu />}
           </button>
