@@ -7,7 +7,7 @@ interface CategoryCardProps {
   category: string;
 }
 
-function TvCategoryCard({ category }: CategoryCardProps) {
+function ShowCategoryCard({ category }: CategoryCardProps) {
   const { data, isLoading } = useTv({
     key: `${category}-tv`,
     category: category,
@@ -55,4 +55,4 @@ function TvCategoryCard({ category }: CategoryCardProps) {
   );
 }
 
-export default memo(TvCategoryCard);
+export default memo(ShowCategoryCard);

@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 
 interface GenreCardProps {
   genre:
-    | "Action_Adventure"
+    | "Action"
     | "Animation"
     | "Comedy"
     | "Crime"
@@ -26,7 +26,7 @@ interface GenreCardProps {
 }
 
 const genreVariants = {
-  Action_Adventure: "10759",
+  Action: "10759",
   Animation: "16",
   Comedy: "35",
   Crime: "80",
@@ -44,7 +44,7 @@ const genreVariants = {
   Western: "37",
 };
 
-function TvGenreCard({ genre }: GenreCardProps) {
+function ShowGenreCard({ genre }: GenreCardProps) {
   const { data, isLoading } = useTvDiscover({
     key: "categories",
     genre: genreVariants[genre] || "Action",
@@ -52,7 +52,7 @@ function TvGenreCard({ genre }: GenreCardProps) {
 
   return (
     <Link to={`/shows/${genreVariants[genre]}`}>
-      <Card>
+      <Card className="transition-all hover:bg-zinc-900">
         <CardHeader>
           {isLoading ? (
             <div className="relative flex flex-wrap items-center justify-center gap-2 after:absolute after:inset-0 after:rounded-lg after:bg-gradient-to-t after:from-background after:via-transparent after:to-transparent">
@@ -94,4 +94,4 @@ function TvGenreCard({ genre }: GenreCardProps) {
   );
 }
 
-export default memo(TvGenreCard);
+export default memo(ShowGenreCard);

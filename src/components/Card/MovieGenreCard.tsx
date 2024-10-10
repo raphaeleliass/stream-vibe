@@ -58,7 +58,7 @@ function MovieGenreCard({ genre }: GenreCardProps) {
 
   return (
     <Link to={`/movies/${genreVariants[genre]}`}>
-      <Card>
+      <Card className="transition-all hover:bg-zinc-900">
         <CardHeader>
           {isLoading ? (
             <div className="relative flex flex-wrap items-center justify-center gap-2 after:absolute after:inset-0 after:rounded-lg after:bg-gradient-to-t after:from-background after:via-transparent after:to-transparent">
@@ -70,7 +70,7 @@ function MovieGenreCard({ genre }: GenreCardProps) {
               ))}
             </div>
           ) : (
-            <div className="relative flex flex-wrap items-center justify-center gap-2 after:absolute after:inset-0 after:rounded-lg after:bg-gradient-to-t after:from-background after:via-transparent after:to-transparent">
+            <div className="relative grid grid-cols-2 items-center justify-center justify-items-center gap-2 after:absolute after:inset-0 after:rounded-lg after:bg-gradient-to-t after:from-background after:via-transparent after:to-transparent">
               {data
                 .map(
                   (item: {

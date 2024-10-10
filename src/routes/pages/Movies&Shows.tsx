@@ -1,10 +1,12 @@
+// TODO RESOLVER ERRO NO CONSOLE E DESIGN DO CAROUSEL
 import MovieCategoryCarousel from "@/components/Carousel/movieCategoryCarousel";
 import MovieGenreCarousel from "@/components/Carousel/movieGenreCarousel";
 import TvCategoryCarousel from "@/components/Carousel/tvCategoryCarousel";
 import TvGenreCarousel from "@/components/Carousel/tvGenreCarousel";
 import CtaPlan from "@/components/CTA/CtaPlan";
 import { Section, SectionTitle } from "@/components/Section/Section";
-import { Button } from "@/components/ui/button";
+import ButtonFavoriteMovie from "@/components/ui/button-favorite-movie";
+import ButtonTrailer from "@/components/ui/button-trailer";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Carousel,
@@ -15,7 +17,7 @@ import {
 } from "@/components/ui/carousel";
 import { Skeleton } from "@/components/ui/skeleton";
 import useMovie from "@/hooks/useMovie";
-import { Play, Plus, ThumbsUp, Volume2 } from "lucide-react";
+import { Link } from "react-router-dom";
 
 function MoviesNShows() {
   const { data, isLoading } = useMovie({
@@ -25,125 +27,113 @@ function MoviesNShows() {
   return (
     <main className="flex flex-col items-center justify-center">
       <Section className="flex items-center justify-center">
-        <Carousel className="max-w-xs md:max-w-3xl lg:max-w-6xl">
+        <Carousel className="container">
           <CarouselContent>
             {isLoading ? (
               <Skeleton />
             ) : (
               <>
-                {data
-                  .map(
-                    (item: {
-                      id: string;
-                      title: string;
-                      backdrop_path: string;
-                    }) => (
-                      <CarouselItem key={item.id} className="md:basis-3/5">
-                        <Card>
-                          <CardHeader>
+                {data.map(
+                  (item: {
+                    id: string;
+                    title: string;
+                    backdrop_path: string;
+                    poster_path: string;
+                  }) => (
+                    <CarouselItem
+                      key={item.id}
+                      className="basis-4/5 md:basis-5/6 lg:basis-5/6"
+                    >
+                      <Link to={`/movie/${item.id}`}>
+                        <Card className="relative flex flex-col items-center justify-between transition-all hover:bg-zinc-900">
+                          <CardHeader className="after:absolute after:inset-0 after:bg-gradient-to-t after:from-background after:to-transparent">
                             <img
-                              src={`https://image.tmdb.org/t/p/w500${item.backdrop_path}`}
+                              loading="lazy"
+                              src={`https://image.tmdb.org/t/p/original${item.backdrop_path}`}
                               alt={`Poster of ${item.title}`}
-                              className="h-80 rounded-lg object-cover object-center md:aspect-video md:h-auto"
+                              className="aspect-video h-80 w-screen rounded-lg object-cover object-center opacity-70 md:aspect-video md:h-96"
                             />
                           </CardHeader>
-                          <CardContent className="flex w-full flex-col items-center justify-center gap-2">
-                            <CardTitle className="font-Poppins text-xl font-normal md:text-2xl">
-                              {item.title}
+                          <CardContent className="absolute bottom-4 flex w-full flex-col items-center justify-center gap-2">
+                            <CardTitle className="text-center font-Poppins font-normal md:text-2xl">
+                              {item.title.length > 16
+                                ? item.title.slice(0, 16).concat("...")
+                                : item.title}
                             </CardTitle>
-                            <div className="flex w-full flex-col items-center justify-center gap-2 md:flex-row">
-                              <Button
-                                variant={"destructive"}
-                                className="w-full gap-1 bg-red-600 hover:bg-red-700 md:w-auto"
-                              >
-                                <Play className="size-4" /> Play Now
-                              </Button>
-
-                              <div className="flex w-full flex-row gap-1 md:w-auto">
-                                <Button
-                                  variant={"secondary"}
-                                  className="w-full"
-                                >
-                                  <Plus />
-                                </Button>
-                                <Button
-                                  variant={"secondary"}
-                                  className="w-full"
-                                >
-                                  <ThumbsUp />
-                                </Button>
-                                <Button
-                                  variant={"secondary"}
-                                  className="w-full"
-                                >
-                                  <Volume2 />
-                                </Button>
-                              </div>
+                            <div className="flex w-full flex-col items-center justify-center gap-2 px-2 md:flex-row">
+                              <ButtonTrailer
+                                param={item.title}
+                                className="w-full md:w-auto"
+                              />
+                              <ButtonFavoriteMovie
+                                itemData={item}
+                                className="w-full md:w-auto"
+                              />
                             </div>
                           </CardContent>
                         </Card>
-                      </CarouselItem>
-                    ),
-                  )
-                  .slice(0, 4)}
+                      </Link>
+                    </CarouselItem>
+                  ),
+                )}
               </>
             )}
           </CarouselContent>
-          <CarouselNext className="hidden md:flex" />
-          <CarouselPrevious className="hidden md:flex" />
+          <CarouselNext />
+          <CarouselPrevious />
         </Carousel>
       </Section>
 
       <Section>
-        <Card className="relative">
+        <Card className="relative border-0">
           <div className="absolute -top-6 left-6 hidden items-center justify-center rounded-lg bg-red-600 px-5 py-2 md:flex">
             Movies
           </div>
           <CardHeader>
-            <CardTitle className="mt-3 text-2xl">Our Genres</CardTitle>
+            <CardTitle className="mt-3 text-2xl">Our Movie Genres</CardTitle>
           </CardHeader>
 
           <CardContent>
             <MovieGenreCarousel />
 
-            <Section>
+            <div className="flex flex-col gap-6 py-12">
               <SectionTitle>Trending Now</SectionTitle>
               <MovieCategoryCarousel category="popular" />
-            </Section>
+            </div>
 
-            <Section>
+            <div className="flex flex-col gap-6 py-12">
               <SectionTitle>New Releases</SectionTitle>
               <MovieCategoryCarousel category="now_playing" />
-            </Section>
+            </div>
 
-            <Section>
+            <div className="flex flex-col gap-6 py-12">
               <SectionTitle>Must - Watch Movies</SectionTitle>
               <MovieCategoryCarousel category="top_rated" />
-            </Section>
+            </div>
           </CardContent>
         </Card>
       </Section>
 
       <Section>
-        <Card className="relative">
+        <Card className="relative border-0">
           <div className="absolute -top-6 left-6 hidden items-center justify-center rounded-lg bg-red-600 px-5 py-2 md:flex">
             Shows
           </div>
           <CardHeader>
-            <CardTitle className="mt-3 text-xl">Our Genres</CardTitle>
+            <CardTitle className="mt-3 text-xl">Our Show Genres</CardTitle>
           </CardHeader>
           <CardContent>
             <TvGenreCarousel />
 
-            <Section>
+            <div className="flex flex-col gap-6 py-12">
               <SectionTitle>Popular Top 10 In Genres</SectionTitle>
               <TvCategoryCarousel category="popular" />
-            </Section>
+            </div>
 
-            <Section>
+            <div className="flex flex-col gap-6 py-12">
               <SectionTitle>Must - Watch Shows</SectionTitle>
               <TvCategoryCarousel category="top_rated" />
-            </Section>
+            </div>
           </CardContent>
         </Card>
       </Section>

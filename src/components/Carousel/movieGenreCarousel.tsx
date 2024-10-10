@@ -12,8 +12,6 @@ const genres: Array<
   "Action" | "Animation" | "Comedy" | "War" | "Fantasy" | "Horror" | "Romance"
 > = ["Action", "Animation", "Comedy", "War", "Fantasy", "Horror"];
 
-//TODO ADICIONAR A TAG LINK PARA A PAGINA QUE LISTA OS ** FILMES ** DOS GENEROS SELECIONARDOS
-
 function MovieGenreCarousel() {
   return (
     <Carousel className="mx-auto w-full max-w-xs md:max-w-2xl lg:max-w-6xl">

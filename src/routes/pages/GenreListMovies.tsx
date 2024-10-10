@@ -1,5 +1,10 @@
-import { Section } from "@/components/Section/Section";
-import ButtonFavorite from "@/components/ui/button-favorite";
+import CtaPlan from "@/components/CTA/CtaPlan";
+import {
+  Section,
+  SectionDescription,
+  SectionTitle,
+} from "@/components/Section/Section";
+import ButtonFavoriteMovie from "@/components/ui/button-favorite-movie";
 import ButtonTrailer from "@/components/ui/button-trailer";
 import {
   Card,
@@ -22,6 +27,28 @@ import useMovieDiscover from "@/hooks/useMovieDiscover";
 import { Star, User } from "lucide-react";
 import { useState } from "react";
 import { Link, useParams } from "react-router-dom";
+
+const genreVariants = {
+  Action: "28",
+  Adventure: "12",
+  Animation: "16",
+  Comedy: "35",
+  Crime: "80",
+  Documentary: "99",
+  Drama: "18",
+  Family: "10751",
+  Fantasy: "14",
+  History: "36",
+  Horror: "27",
+  Music: "10402",
+  Mystery: "9648",
+  Romance: "10749",
+  Science_Fiction: "878",
+  TV_Movie: "10770",
+  Thriller: "53",
+  War: "10752",
+  Western: "37",
+};
 
 function GenreListMovies() {
   const { id } = useParams();
@@ -60,7 +87,17 @@ function GenreListMovies() {
           ))}
         </div>
       ) : (
-        <Section className="w-full">
+        <Section className="relative w-full">
+          <SectionTitle>Discover Our Movies</SectionTitle>
+          <span className="absolute right-12 top-0 flex flex-row items-center justify-center rounded bg-red-600 px-2 py-1 text-xs font-semibold md:right-1/2 md:top-2 lg:left-[21rem] lg:right-auto">
+            {Object.keys(genreVariants).find(
+              (key) => genreVariants[key as keyof typeof genreVariants] === id,
+            )}
+          </span>
+          <SectionDescription>
+            Explore and discover our movies with a wide variety of genres and
+            categories.
+          </SectionDescription>
           <div className="grid grid-cols-1 gap-3 md:grid-cols-3 lg:grid-cols-5">
             {movies.map(
               (movie: {
@@ -72,7 +109,7 @@ function GenreListMovies() {
               }) => (
                 <Card
                   key={movie.id}
-                  className="flex max-w-xs flex-col items-center justify-between"
+                  className="flex max-w-xs flex-col items-center justify-between transition-all hover:bg-zinc-900"
                 >
                   <Link to={`/movie/${movie.id}`}>
                     <CardHeader className="w-full">
@@ -113,8 +150,7 @@ function GenreListMovies() {
                       param={movie.title}
                       className="w-full md:w-auto"
                     />
-                    <ButtonFavorite
-                      mediaType="Movies"
+                    <ButtonFavoriteMovie
                       itemData={movie}
                       className="w-full md:w-auto"
                     />
@@ -145,6 +181,7 @@ function GenreListMovies() {
           </PaginationContent>
         </Pagination>
       </div>
+      <CtaPlan />
     </main>
   );
 }

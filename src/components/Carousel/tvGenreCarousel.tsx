@@ -6,10 +6,11 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import { memo } from "react";
-import TvGenreCard from "../Card/tvGenreCard";
+import TvGenreCard from "../Card/ShowGenreCard";
+import { Link } from "react-router-dom";
 
 const genres: Array<
-  | "Action_Adventure"
+  | "Action"
   | "Animation"
   | "Comedy"
   | "Crime"
@@ -26,7 +27,7 @@ const genres: Array<
   | "War_Politics"
   | "Western"
 > = [
-  "Action_Adventure",
+  "Action",
   "Animation",
   "Comedy",
   "Crime",
@@ -44,8 +45,6 @@ const genres: Array<
   "Western",
 ];
 
-//TODO ADICIONAR A TAG LINK PARA A PAGINA QUE LISTA AS ** SERIES ** DOS GENEROS SELECIONARDOS
-
 function TvGenreCarousel() {
   return (
     <Carousel className="mx-auto w-full max-w-xs md:max-w-2xl lg:max-w-6xl">
@@ -55,7 +54,9 @@ function TvGenreCarousel() {
             key={genre}
             className="basis-2/3 md:basis-2/5 lg:basis-1/5"
           >
-            <TvGenreCard genre={genre} />
+            <Link to={`/shows/${genre}`}>
+              <TvGenreCard genre={genre} />
+            </Link>
           </CarouselItem>
         ))}
       </CarouselContent>

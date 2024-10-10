@@ -6,8 +6,8 @@ import { useQuery } from "@tanstack/react-query";
 
 function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
-  const { data: countFav } = useQuery({
-    queryKey: ["count-content"],
+  const { data: countFavMovies } = useQuery({
+    queryKey: ["count-movies"],
     queryFn: () => {
       const response = JSON.parse(
         localStorage.getItem("favorite-Movies") || "[]",
@@ -16,6 +16,20 @@ function Navbar() {
     },
     refetchInterval: 1000,
   });
+
+  const { data: countFavShows } = useQuery({
+    queryKey: ["count-shows"],
+    queryFn: () => {
+      const response = JSON.parse(
+        localStorage.getItem("favorite-Shows") || "[]",
+      );
+      return response;
+    },
+    refetchInterval: 1000,
+  });
+
+  const countAllFavorites =
+    (countFavMovies?.length ?? 0) + (countFavShows?.length ?? 0);
 
   function toggleMenu() {
     setMenuOpen(!menuOpen);
@@ -59,15 +73,16 @@ function Navbar() {
         <div className="z-50 flex flex-row items-center justify-center gap-4">
           <button>
             <Search />
+            {/* TODO IMPLEMENTAR BUSCAS POR FILMES OU SÉRIES NO SITE  */}
           </button>
           <button className="relative">
             <Link to="/liked">
               <Heart />
 
               <span
-                className={`absolute right-0.5 top-1/2 size-4 flex-col items-center justify-center rounded-full bg-red-600 text-[8px] font-bold md:text-xs ${countFav?.length === 0 ? "hidden" : "flex"}`}
+                className={`absolute right-0.5 top-1/2 size-4 flex-col items-center justify-center rounded-full bg-red-600 text-[8px] font-bold md:text-xs ${countFavMovies?.length && countFavShows?.length === 0 ? "hidden" : "flex"}`}
               >
-                {countFav?.length}
+                {countAllFavorites}
               </span>
             </Link>
           </button>

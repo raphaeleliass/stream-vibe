@@ -1,6 +1,8 @@
 import CtaPlan from "@/components/CTA/CtaPlan";
 import { Section } from "@/components/Section/Section";
 import { Button } from "@/components/ui/button";
+import ButtonFavoriteMovie from "@/components/ui/button-favorite-movie";
+import ButtonTrailer from "@/components/ui/button-trailer";
 import {
   Card,
   CardContent,
@@ -18,16 +20,7 @@ import {
 import { Skeleton } from "@/components/ui/skeleton";
 import { movieApi } from "@/services/movieApi";
 import { useQuery } from "@tanstack/react-query";
-import {
-  Calendar,
-  Languages,
-  Layers,
-  Play,
-  Plus,
-  Star,
-  ThumbsUp,
-  Volume2,
-} from "lucide-react";
+import { Calendar, Languages, Layers, Star } from "lucide-react";
 import { useParams } from "react-router-dom";
 
 function Movie() {
@@ -69,9 +62,9 @@ function Movie() {
           <Section>
             <div className="relative flex w-full items-center justify-center after:absolute after:inset-0 after:bg-background after:opacity-50">
               <img
-                src={`https://image.tmdb.org/t/p/w500${movie.backdrop_path}`}
+                src={`https://image.tmdb.org/t/p/original${movie.backdrop_path}`}
                 alt={`Backdrop of the movie ${movie.title}`}
-                className="aspect-square h-96 w-full rounded-lg object-cover object-center md:aspect-video md:h-auto lg:max-w-2xl"
+                className="lg:max-w-screen aspect-square h-96 max-h-96 w-full rounded-lg object-cover object-center md:aspect-video md:h-auto"
               />
               <div className="absolute bottom-2 z-10 flex flex-col gap-2 md:bottom-10">
                 <h2 className="text-center text-xl font-semibold drop-shadow-xl">
@@ -81,23 +74,11 @@ function Movie() {
                   {movie.tagline}
                 </p>
                 <div className="flex w-full flex-col items-center justify-center gap-2 md:flex-row">
-                  <Button
-                    variant={"destructive"}
-                    className="w-full gap-1 bg-red-600 hover:bg-red-700 md:w-auto"
-                  >
-                    <Play className="size-4" /> Play Now
-                  </Button>
-                  <div className="flex w-full flex-row gap-1 md:w-auto">
-                    <Button variant={"secondary"} className="w-full">
-                      <Plus />
-                    </Button>
-                    <Button variant={"secondary"} className="w-full">
-                      <ThumbsUp />
-                    </Button>
-                    <Button variant={"secondary"} className="w-full">
-                      <Volume2 />
-                    </Button>
-                  </div>
+                  <ButtonTrailer param={movie.title} className="w-full" />
+                  <ButtonFavoriteMovie
+                    itemData={movie}
+                    className="w-full md:w-auto"
+                  />
                 </div>
               </div>
             </div>

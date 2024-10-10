@@ -57,13 +57,13 @@ function TvCategoryCarousel({ category }: CategoryCarouselProps) {
                     className="basis-5/6 md:basis-2/5 lg:basis-1/4"
                   >
                     <Link to={`/tv/${item.id}`}>
-                      <Card>
+                      <Card className="flex flex-col justify-between transition-all hover:bg-zinc-900">
                         <CardHeader>
                           <img
                             loading="lazy"
                             src={`https://image.tmdb.org/t/p/w500${item.poster_path}`}
                             alt={`Poster of ${item.title}`}
-                            className="w-full rounded-lg object-cover object-center"
+                            className="min-h-72 w-full rounded-lg object-cover object-center"
                           />
                         </CardHeader>
                         <CardContent className="flex flex-row justify-between">
